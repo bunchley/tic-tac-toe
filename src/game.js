@@ -30,6 +30,7 @@ function displayCurrentPlayerName(name, marker) {
 }
 
 function playGame() {
+  //   displayPlayerOneName();
   displayCurrentPlayerName(playerOne.name, playerOne.marker);
 }
 playGame();
