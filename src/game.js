@@ -1,4 +1,5 @@
 let playerTurnDisplay = document.querySelector(".player-turn");
+
 let Player = function Player(name, marker) {
   this.name = name;
   this.marker = marker;
@@ -12,8 +13,24 @@ const board = document.querySelector(".board");
 const playerOne = new Player("Ashley", "X");
 const playerTwo = new Player("Kevin", "O");
 
-function handleClick() {
-  console.log("Position Clicked");
+const boardDisplay = {
+  one: "O",
+  two: "X",
+  three: "O",
+  four: "X",
+  five: "O",
+  six: "X",
+  seven: "O",
+  eight: "X",
+  nine: "O",
+};
+function showCurrentGameBoard() {
+  for (spot in boardDisplay) {
+    console.log(spot);
+    position = document.getElementById(`${spot}`);
+    move = document.createTextNode(`${boardDisplay[spot]}`);
+    position.appendChild(move);
+  }
 }
 
 board.addEventListener("click", (event) => {
@@ -21,7 +38,7 @@ board.addEventListener("click", (event) => {
   if (!isButton) {
     return;
   }
-  console.dir(event.target.id);
+  //   console.dir(event.target.id);
 });
 
 function displayCurrentPlayerName(name, marker) {
@@ -31,6 +48,7 @@ function displayCurrentPlayerName(name, marker) {
 
 function playGame() {
   //   displayPlayerOneName();
+  showCurrentGameBoard();
   displayCurrentPlayerName(playerOne.name, playerOne.marker);
 }
 playGame();
