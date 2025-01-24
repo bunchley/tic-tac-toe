@@ -1,5 +1,6 @@
 let playerTurnDisplay = document.querySelector(".player-turn");
-
+let currentplayer = "X";
+let winCheck = "";
 let Player = function Player(name, marker) {
   this.name = name;
   this.marker = marker;
@@ -14,41 +15,66 @@ const playerOne = new Player("Ashley", "X");
 const playerTwo = new Player("Kevin", "O");
 
 const boardDisplay = {
-  one: "O",
-  two: "X",
-  three: "O",
-  four: "X",
-  five: "O",
-  six: "X",
-  seven: "O",
-  eight: "X",
-  nine: "O",
+  one: "",
+  two: "",
+  three: "",
+  four: "",
+  five: "",
+  six: "",
+  seven: "",
+  eight: "",
+  nine: "",
 };
 function showCurrentGameBoard() {
   for (spot in boardDisplay) {
-    console.log(spot);
-    position = document.getElementById(`${spot}`);
-    move = document.createTextNode(`${boardDisplay[spot]}`);
-    position.appendChild(move);
+    let placement = document.getElementById(`${spot}`);
+    placement.textContent = `${boardDisplay[spot]}`;
   }
 }
 
-board.addEventListener("click", (event) => {
-  const isButton = event.target.nodeName === "BUTTON";
-  if (!isButton) {
-    return;
+function displayCurrentPlayerName(player) {
+  let playerName = `${player.marker}:${player.name}'s Turn`;
+  playerTurnDisplay.textContent = `${playerName}`;
+}
+function gameCheck() {
+  console.log("Game checked for a winner");
+  winCheck = false;
+  if (!winCheck) {
+  } else {
+    console.log("winner winner");
   }
-  //   console.dir(event.target.id);
-});
-
-function displayCurrentPlayerName(name, marker) {
-  let playerName = document.createTextNode(`${marker}:${name}'s Turn`);
-  playerTurnDisplay.appendChild(playerName);
 }
 
 function playGame() {
   //   displayPlayerOneName();
   showCurrentGameBoard();
-  displayCurrentPlayerName(playerOne.name, playerOne.marker);
+
+  displayCurrentPlayerName(playerOne);
+  //   let currentplayer = `${playerOne.marker}`;
+  board.addEventListener("click", (event) => {
+    const isButton = event.target.nodeName === "BUTTON";
+    if (!isButton) {
+      return;
+    }
+    if (currentplayer === "X") {
+      position = event.target.id;
+
+      boardDisplay[`${position}`] = `${currentplayer}`;
+      console.log(boardDisplay);
+
+      gameCheck();
+      currentplayer = "O";
+      displayCurrentPlayerName(playerTwo);
+    } else if (currentplayer === "O") {
+      position = event.target.id;
+      boardDisplay[`${position}`] = `${currentplayer}`;
+      console.log(boardDisplay);
+      gameCheck();
+      currentplayer = "X";
+      displayCurrentPlayerName(playerOne);
+    }
+    showCurrentGameBoard();
+  });
 }
+
 playGame();
