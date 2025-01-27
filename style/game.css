@@ -51,6 +51,12 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50px;
+  align-content: center;
+  align-items: stretch;
+  justify-items: stretch;
+}
+.player-turn {
+  padding-top: 30px;
 }
 .title,
 .score,
@@ -63,7 +69,12 @@ body {
   font-size: 48px;
   text-align: center;
 }
-
+.user,
+.robot,
+.player-turn {
+  font-size: 20px;
+  color: #fefae0;
+}
 .board {
   grid-row: 3 / 5;
   /* border: 5px solid #dda15e; */
@@ -125,8 +136,9 @@ body {
   grid-row: 3;
   grid-column: 3;
 }
-/* .position.one {
-  } */
+
 .player-turn {
   border-top: 5px solid #dda15e;
+  height: 100px;
+  align-items: center;
 }
