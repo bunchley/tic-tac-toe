@@ -25,11 +25,10 @@ a {
 .game {
   display: grid;
   grid-template-columns: 1fr 380px 1fr;
-  grid-template-rows: 1fr 600px 1fr;
+  grid-template-rows: 1fr 6fr 1fr;
   color: #283618;
   align-items: center;
   padding-top: 100px;
-  /* grid-auto-rows: 300px; */
 }
 .left-stage {
   grid-column: 1;

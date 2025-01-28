@@ -86,7 +86,6 @@ function gameOver(player) {
   showCurrentGameBoard(true);
   playerTurnDisplay.textContent = `${player.name}`;
   sessionStorage.setItem("winner", `${player.name}`);
-  // sessionStorage.setItem("playerOneScore", 1);
   window.location.href = "gameover.html";
 }
 

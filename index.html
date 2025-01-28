@@ -11,11 +11,33 @@
     <div class="game">
       <div class="center-stage container">
         <div class="title">Tic Tac Toe</div>
+        <div class="name oneName">
+          <label for="oneName" class="oneName">Player One: </label>
+          <input
+            type="text"
+            name="oneName"
+            id="oneName"
+            placeholder="Bert"
+            maxlength="6"
+          />
+        </div>
+        <div class="name twoName">
+          <label for="twoName" class="twoName" id="inputTwoName"
+            >Player Two:
+          </label>
+          <input
+            type="text"
+            name="oneName"
+            placeholder="Ernie"
+            id="twoName"
+            maxlength="6"
+          />
+        </div>
         <div class="play">
-          <a href="./game.html" class="button">Start Game</a>
+          <button class="play">Start Game</button>
         </div>
       </div>
     </div>
-    <script src="src/intro.js"></script>
+    <script src="src/index.js"></script>
   </body>
 </html>

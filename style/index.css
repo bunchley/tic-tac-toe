@@ -16,15 +16,19 @@ body {
 input {
   background-color: #283618;
   color: #dda15e;
+  height: 40px;
+}
+input[type="text" i] {
+  font-weight: bold;
+  font-size: 28px;
 }
 
 .game {
   display: grid;
   grid-template-columns: 1fr 400px 1fr;
-  grid-template-rows: 1fr 400px 1fr;
+  grid-template-rows: 1fr 6fr 1fr;
   color: #283618;
   align-items: center;
-  /* grid-auto-rows: 300px; */
 }
 .left-stage {
   grid-column: 1;
@@ -40,37 +44,55 @@ input {
   grid-template-rows: 1fr 1fr;
   align-items: stretch;
   margin-top: 50px;
-
-  /* grid-template-columns: 1fr; */
 }
 .title {
   grid-row: 1;
   padding-top: 15px;
 }
 .play {
-  grid-row: 2;
+  grid-row: 4;
 }
 
 .title,
-.play,
-.reset {
+.play {
   background-color: #606c38;
   font-weight: bold;
   color: #bc6c25;
   display: flex;
   align-items: center;
   flex-direction: column;
-  /* grid-template-rows: 1/2; */
-  /* border: 5px solid #dda15e; */
   font-size: 48px;
   text-align: center;
   padding-bottom: 30px;
 }
 
-a.button {
+button {
   padding: 15px;
   color: #fefae0;
   background-color: #283618;
   border: 5px solid #fefae0;
   text-decoration: none;
+}
+.name {
+  background-color: #606c38;
+  padding: 15px;
+  color: #fefae0;
+  text-decoration: none;
+}
+.oneName,
+.twoName {
+  font-weight: bold;
+  font-size: 28px;
+}
+.oneName {
+  grid-row: 2;
+}
+button.play {
+  padding: 10px;
+  align-items: center;
+  color: #fefae0;
+  background-color: #283618;
+  border: 5px solid #fefae0;
+  text-decoration: none;
+  display: flex;
 }
