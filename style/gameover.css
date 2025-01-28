@@ -20,7 +20,7 @@ input {
 
 .game {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 400px 1fr;
   grid-template-rows: 1fr 400px 1fr;
   color: #283618;
   align-items: center;
