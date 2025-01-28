@@ -39,11 +39,13 @@ input {
   display: grid;
   grid-template-rows: 1fr 1fr;
   align-items: stretch;
+  margin-top: 50px;
 
   /* grid-template-columns: 1fr; */
 }
 .title {
   grid-row: 1;
+  padding-top: 15px;
 }
 .play {
   grid-row: 2;

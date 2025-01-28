@@ -1,4 +1,8 @@
 let playerTurnDisplay = document.querySelector(".player-turn");
+let playerOneName = sessionStorage.getItem("playerOneName");
+let playerOneScore = sessionStorage.getItem("playerOneScore");
+let playerTwoName = sessionStorage.getItem("playerTwoName");
+let playerTwoScore = sessionStorage.getItem("playerTwoScore");
 let currentplayer = "X";
 let winCheck = "";
 let Player = function Player(name, marker) {
@@ -9,8 +13,8 @@ const wins = [123, 456, 789, 147, 258, 369, 159, 357];
 
 const board = document.querySelector(".board");
 
-const playerOne = new Player("Ashley", "X");
-const playerTwo = new Player("Kevin", "O");
+const playerOne = new Player(playerOneName, "X");
+const playerTwo = new Player(playerTwoName, "O");
 
 const boardDisplay = {
   one: "",
@@ -45,7 +49,6 @@ function displayCurrentPlayerName(player, title) {
   playerTurnDisplay.textContent = `${playerName}`;
 }
 function gameCheck(player) {
-  console.log("Game checked for a winner");
   let playerArray = [];
   let position = 1;
 
@@ -65,13 +68,25 @@ function gameCheck(player) {
   }
 
   position = 0;
-  console.log(playerArray);
+}
+function updateScore(player) {
+  if (player.marker === "X") {
+    playerOneScore++;
+    sessionStorage.setItem("playerOneScore", playerOneScore);
+  }
+  if (player.marker === "O") {
+    playerTwoScore++;
+    sessionStorage.setItem("playerTwoScore", playerTwoScore);
+  } else {
+    console.log(`Score not updated`);
+  }
 }
 function gameOver(player) {
-  console.log(`player wins`, player.name);
+  updateScore(player);
   showCurrentGameBoard(true);
   playerTurnDisplay.textContent = `${player.name}`;
-  sessionStorage.setItem("player", "player");
+  sessionStorage.setItem("winner", `${player.name}`);
+  // sessionStorage.setItem("playerOneScore", 1);
   window.location.href = "gameover.html";
 }
 
