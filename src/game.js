@@ -24,13 +24,14 @@ const boardDisplay = {
   nine: "",
 };
 
-function checkAgainstWinningMoves() {
-  console.log("Checking against winning Moves");
-}
-function showCurrentGameBoard() {
+function showCurrentGameBoard(clear) {
   for (spot in boardDisplay) {
     let placement = document.getElementById(`${spot}`);
-    placement.textContent = `${boardDisplay[spot]}`;
+    if (clear === true) {
+      placement.textContent = boardDisplay[spot] = "";
+    } else {
+      placement.textContent = `${boardDisplay[spot]}`;
+    }
   }
 }
 
@@ -58,11 +59,8 @@ function gameCheck(player) {
     if (playerArray.length > 2) {
       let winner = playerArray.includes(`${wins[i]}`);
       if (winner === true) {
-        console.log(`And the winner is...`, ` ${player.marker}`);
         return winner;
       }
-      console.log("here is the win combo", wins[i]);
-      console.log("Issssss there a winner?", winner);
     }
   }
 
@@ -71,14 +69,17 @@ function gameCheck(player) {
 }
 function gameOver(player) {
   console.log(`player wins`, player.name);
-  // clear board
+  showCurrentGameBoard(true);
+  playerTurnDisplay.textContent = `${player.name}`;
+  sessionStorage.setItem("player", "player");
+  window.location.href = "gameover.html";
 }
-function playGame() {
-  //   displayPlayerOneName();
-  showCurrentGameBoard();
 
+function displayWinner() {}
+function playGame() {
+  showCurrentGameBoard(false);
   displayCurrentPlayerName(playerOne, true);
-  //   let currentplayer = `${playerOne.marker}`;
+
   board.addEventListener("click", (event) => {
     const isButton = event.target.nodeName === "BUTTON";
     if (!isButton) {
@@ -98,12 +99,13 @@ function playGame() {
     } else if (currentplayer === "O") {
       position = event.target.id;
       boardDisplay[`${position}`] = `${currentplayer}`;
-      console.log(boardDisplay);
-      gameCheck(playerTwo);
-      currentplayer = "X";
+      if (gameCheck(playerTwo) === true) {
+        gameOver(playerTwo);
+      }
       displayCurrentPlayerName(playerOne, false);
+      currentplayer = "X";
     }
-    showCurrentGameBoard();
+    showCurrentGameBoard(false);
   });
 }
 
