@@ -1,126 +1,130 @@
-let playerTurnDisplay = document.querySelector(".player-turn");
-let playerOneName = sessionStorage.getItem("playerOneName");
-let playerOneScore = sessionStorage.getItem("playerOneScore");
-let playerTwoName = sessionStorage.getItem("playerTwoName");
-let playerTwoScore = sessionStorage.getItem("playerTwoScore");
-let currentplayer = "X";
-let winCheck = "";
-let Player = function Player(name, marker) {
-  this.name = name;
-  this.marker = marker;
-};
-const wins = [123, 456, 789, 147, 258, 369, 159, 357];
+const GameBoard = (() => {
+  const boardContainer = document.querySelector(".board");
 
-const board = document.querySelector(".board");
+  const getBoard = boardContainer;
 
-const playerOne = new Player(playerOneName, "X");
-const playerTwo = new Player(playerTwoName, "O");
-
-const boardDisplay = {
-  one: "",
-  two: "",
-  three: "",
-  four: "",
-  five: "",
-  six: "",
-  seven: "",
-  eight: "",
-  nine: "",
-};
-
-function showCurrentGameBoard(clear) {
-  for (spot in boardDisplay) {
-    let placement = document.getElementById(`${spot}`);
-    if (clear === true) {
-      placement.textContent = boardDisplay[spot] = "";
-    } else {
-      placement.textContent = `${boardDisplay[spot]}`;
-    }
-  }
-}
-
-function displayCurrentPlayerName(player, title) {
-  let playerName = `${player.marker}:${player.name}'s Turn`;
-  if (title === true) {
-    playerName = `${player.marker}:${player.name}`;
-    document.querySelector(".user").textContent = `${playerOne.name}`;
-    document.querySelector(".robot").textContent = `${playerTwo.name}`;
-  }
-  playerTurnDisplay.textContent = `${playerName}`;
-}
-function gameCheck(player) {
-  let playerArray = [];
-  let position = 1;
-
-  for (property in boardDisplay) {
-    if (boardDisplay[property] === player.marker) {
-      playerArray += [position];
-    }
-    position += 1;
-  }
-  for (i = 0; i < wins.length; i++) {
-    if (playerArray.length > 2) {
-      let winner = playerArray.includes(`${wins[i]}`);
-      if (winner === true) {
-        return winner;
+  const showCurrentGameBoard = (clear) => {
+    for (spot in boardDisplay) {
+      let placement = document.getElementById(`${spot}`);
+      if (clear === true) {
+        placement.textContent = boardDisplay[spot] = "";
+      } else {
+        placement.textContent = `${boardDisplay[spot]}`;
       }
     }
-  }
+  };
+  const boardDisplay = {
+    one: "",
+    two: "",
+    three: "",
+    four: "",
+    five: "",
+    six: "",
+    seven: "",
+    eight: "",
+    nine: "",
+  };
 
-  position = 0;
-}
-function updateScore(player) {
-  if (player.marker === "X") {
-    playerOneScore++;
-    sessionStorage.setItem("playerOneScore", playerOneScore);
-  }
-  if (player.marker === "O") {
-    playerTwoScore++;
-    sessionStorage.setItem("playerTwoScore", playerTwoScore);
-  } else {
-    console.log(`Score not updated`);
-  }
-}
-function gameOver(player) {
-  updateScore(player);
-  showCurrentGameBoard(true);
-  playerTurnDisplay.textContent = `${player.name}`;
-  sessionStorage.setItem("winner", `${player.name}`);
-  window.location.href = "gameover.html";
-}
+  return { getBoard, showCurrentGameBoard, boardDisplay };
+})();
 
-function displayWinner() {}
-function playGame() {
-  showCurrentGameBoard(false);
-  displayCurrentPlayerName(playerOne, true);
+const GameSystems = (() => {
+  const wins = [123, 456, 789, 147, 258, 369, 159, 357];
+  const playerTurnDisplay = document.querySelector(".player-turn");
 
-  board.addEventListener("click", (event) => {
+  const displayCurrentPlayerName = (currentMarker, currentName) => {
+    let playerName = `${currentMarker}:${currentName}'s Turn`;
+    playerTurnDisplay.textContent = `${playerName}`;
+  };
+  const gameCheck = (playerMarker) => {
+    let playerArray = [];
+    let position = 1;
+    for (property in GameBoard.boardDisplay) {
+      if (GameBoard.boardDisplay[property] === playerMarker) {
+        playerArray += [position];
+      }
+      position += 1;
+    }
+    for (i = 0; i < wins.length; i++) {
+      if (playerArray.length > 2) {
+        let winner = playerArray.indexOf(`${wins[i]}`);
+        if (winner != -1) {
+          return true;
+        }
+      }
+    }
+    position = 0;
+  };
+  const gameOver = (winner) => {
+    GameBoard.showCurrentGameBoard(true);
+    playerTurnDisplay.textContent = `${winner}`;
+    sessionStorage.setItem("winner", `${winner}`);
+    window.location.href = "gameover.html";
+  };
+
+  const setNames = (user, robot) => {
+    document.querySelector(".user").textContent = `${user}`;
+    document.querySelector(".robot").textContent = `${robot}`;
+  };
+  return { displayCurrentPlayerName, gameCheck, gameOver, setNames };
+})();
+
+const Player = (name, marker, score) => {
+  const getScore = () => score;
+  const add2Score = () => score++;
+  let winner = false;
+  const getName = () => name;
+  const getMarker = () => marker;
+
+  return { getScore, add2Score, getName, getMarker, winner };
+};
+
+const PlayGame = (() => {
+  let playerOneName = sessionStorage.getItem("playerOneName");
+  let playerTwoName = sessionStorage.getItem("playerTwoName");
+  let playerOneScore = sessionStorage.getItem("playerOneScore");
+  let playerTwoScore = sessionStorage.getItem("playerTwoScore");
+  const playerOne = Player(playerOneName, "X", playerOneScore);
+  const playerTwo = Player(playerTwoName, "O", playerTwoScore);
+  GameSystems.setNames(playerOne.getName(), playerTwo.getName());
+  let currentPlayerMarker = playerOne.getMarker();
+  let currentPlayerName = playerOne.getName();
+  GameBoard.showCurrentGameBoard(false);
+  GameSystems.displayCurrentPlayerName(currentPlayerMarker, currentPlayerName);
+
+  GameBoard.getBoard.addEventListener("click", (event) => {
     const isButton = event.target.nodeName === "BUTTON";
-    if (!isButton) {
+    let position = event.target.id;
+    if (
+      !isButton ||
+      GameBoard.boardDisplay[`${position}`] === "X" ||
+      GameBoard.boardDisplay[`${position}`] === "O"
+    ) {
       return;
     }
-    if (currentplayer === "X") {
-      position = event.target.id;
+    GameBoard.boardDisplay[`${position}`] = `${currentPlayerMarker}`;
 
-      boardDisplay[`${position}`] = `${currentplayer}`;
-      console.log(boardDisplay);
-
-      if (gameCheck(playerOne) === true) {
-        gameOver(playerOne);
+    if (currentPlayerMarker === playerOne.getMarker()) {
+      if (GameSystems.gameCheck(playerOne.getMarker(), playerOne.getName())) {
+        playerOne.add2Score();
+        sessionStorage.setItem("playerOneScore", playerOne.getScore());
+        GameSystems.gameOver(playerOne.getName());
       }
-      currentplayer = "O";
-      displayCurrentPlayerName(playerTwo, false);
-    } else if (currentplayer === "O") {
-      position = event.target.id;
-      boardDisplay[`${position}`] = `${currentplayer}`;
-      if (gameCheck(playerTwo) === true) {
-        gameOver(playerTwo);
+      currentPlayerMarker = playerTwo.getMarker();
+      currentPlayerName = playerTwo.getName();
+    } else {
+      if (GameSystems.gameCheck(playerTwo.getMarker(), playerTwo.getName())) {
+        playerTwo.add2Score();
+        sessionStorage.setItem("playerTwoScore", playerTwo.getScore());
+        GameSystems.gameOver(playerTwo.getName());
       }
-      displayCurrentPlayerName(playerOne, false);
-      currentplayer = "X";
+      currentPlayerMarker = playerOne.getMarker();
+      currentPlayerName = playerOne.getName();
     }
-    showCurrentGameBoard(false);
+    GameSystems.displayCurrentPlayerName(
+      currentPlayerMarker,
+      currentPlayerName
+    );
+    GameBoard.showCurrentGameBoard(false);
   });
-}
-
-playGame();
+})();
